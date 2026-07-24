@@ -1,0 +1,16 @@
+{
+  "action_id": "example-001",
+  "zone_setpoints": {
+    "SPACE1-1": {
+      "heating_c": 20.0,
+      "cooling_c": 24.0
+    },
+    "SPACE2-1": {
+      "heating_c": 20.0,
+      "cooling_c": 24.0
+    }
+  },
+  "mode": "normal",
+  "rationale": "Occupied zones, mild conditions, standard comfort setpoints",
+  "confidence": 0.9
+}
