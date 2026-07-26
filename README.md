@@ -91,30 +91,19 @@ energyplus-agent/
 
 ## Architecture
 
-```
-                    Building State (from EnergyPlus/Synthetic)
-                                    |
-                            StateReader + Evaluators
-                    (comfort, energy, forecast, MPC, oscillation)
-                                    |
-                    +---------------+---------------+
-                    |               |               |
-               EnergyAgent    ComfortAgent    ForecastAgent
-               (minimize kWh) (maintain PMV)  (pre-condition)
-                    |               |               |
-                    +-------+-------+-------+-------+
-                            |
-                    SupervisorAgent
-                    (merge: Safety > Comfort > Energy)
-                            |
-                       SafetyEngine
-                   (clamp, deadband, rate-limit)
-                            |
-                    Approved Setpoints
-                            |
-                    Audit Log (JSONL)
-                            |
-                   Dashboard + Metrics
+```mermaid
+graph TD
+    A[Building State<br>EnergyPlus / Synthetic] --> B(StateReader + Evaluators<br>Comfort, Energy, Forecast, MPC, Oscillation)
+    B --> C(EnergyAgent)
+    B --> D(ComfortAgent)
+    B --> E(ForecastAgent)
+    C --> F(SupervisorAgent<br>Merge Priority: Safety > Comfort > Energy)
+    D --> F
+    E --> F
+    F --> G(SafetyEngine<br>Clamp, Deadband, Rate-limit)
+    G --> H[Approved Setpoints]
+    H --> I[(Audit Log JSONL)]
+    I --> J[Dashboard + Metrics]
 ```
 
 ## Key Design Decisions

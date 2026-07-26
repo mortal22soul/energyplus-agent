@@ -82,21 +82,15 @@ flowchart TB
 
 ### 3.1 Agent Hierarchy
 
-```
-SupervisorAgent (merge with priority: Safety > Comfort > Energy)
-    |
-    +-- EnergyAgent: Minimize HVAC energy consumption
-    |   - Widen deadband for unoccupied zones
-    |   - Reduce runtime when outdoor temps are mild
-    |
-    +-- ComfortAgent: Maintain PMV in [-0.5, 0.5]
-    |   - Adjust setpoints to maintain comfort
-    |   - Prioritize occupied zones
-    |
-    +-- ForecastAgent: Optimize for predictions
-        - Pre-cool before hot weather
-        - Pre-heat before cold weather
-        - Begin setback near end of occupancy
+```mermaid
+graph TD
+    SUP[SupervisorAgent<br>Merge Priority: Safety > Comfort > Energy]
+    EA[EnergyAgent<br>Minimize HVAC energy consumption<br>- Widen deadband for unoccupied zones<br>- Reduce runtime when mild]
+    CA[ComfortAgent<br>Maintain PMV in -0.5, 0.5<br>- Adjust setpoints for comfort<br>- Prioritize occupied zones]
+    FA[ForecastAgent<br>Optimize for predictions<br>- Pre-cool before hot weather<br>- Pre-heat before cold weather<br>- Begin setback near end of occupancy]
+    SUP --> EA
+    SUP --> CA
+    SUP --> FA
 ```
 
 ### 3.2 Supervisor Merge Rules

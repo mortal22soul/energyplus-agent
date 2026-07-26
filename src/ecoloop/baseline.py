@@ -17,9 +17,9 @@ class BaselineController:
     This provides a clear target for the AI to beat.
     """
 
-    # Fixed setpoints for occupied/unoccupied
-    OCCUPIED_HEATING_C: float = 20.0
-    OCCUPIED_COOLING_C: float = 26.0
+    # Fixed setpoints for occupied/unoccupied (set to maintain PMV in [-0.5, 0.5])
+    OCCUPIED_HEATING_C: float = 22.5
+    OCCUPIED_COOLING_C: float = 24.5
     UNOCCUPIED_HEATING_C: float = 18.0
     UNOCCUPIED_COOLING_C: float = 30.0
 

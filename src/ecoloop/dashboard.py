@@ -484,7 +484,8 @@ def _render_comfort(events: list[dict]) -> None:
             c_sp = sp.get("cooling_c", 28)
             if temp < h_sp or temp > c_sp:
                 violations += 1
-            pmv_est = _estimate_pmv(temp, h_sp, c_sp)
+            # Use real PMV from log, fallback to estimate if missing
+            pmv_est = e.get("zone_pmv", {}).get(zone, _estimate_pmv(temp, h_sp, c_sp))
             pmv_data.setdefault(zone, []).append(pmv_est)
         compliance = (total - violations) / total * 100 if total > 0 else 100
         comfort_pcts.append(compliance)
@@ -542,7 +543,7 @@ def _render_comfort(events: list[dict]) -> None:
             sp = zone_sps.get(zone, {})
             h = sp.get("heating_c", 18)
             c = sp.get("cooling_c", 28)
-            pmv = _estimate_pmv(temp, h, c)
+            pmv = last.get("zone_pmv", {}).get(zone, _estimate_pmv(temp, h, c))
             status = "Comfortable" if -0.5 <= pmv <= 0.5 else "Uncomfortable"
             occ = last.get("occupancy", {}).get(zone, 0)
             rows.append({

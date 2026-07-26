@@ -21,10 +21,12 @@ def main() -> None:
     # demo - offline deterministic control loop
     demo = sub.add_parser("demo", help="Run offline deterministic control loop demo")
     demo.add_argument("--mode", choices=["ai", "baseline", "compare"], default="compare")
+    demo.add_argument("--steps", type=int, default=96, help="Number of 15-minute steps to simulate (96 = 24h)")
 
     # run - full simulation with controller
     run = sub.add_parser("run", help="Run full simulation with controller")
     run.add_argument("--mode", choices=["ai", "baseline", "compare"], default="compare")
+    run.add_argument("--steps", type=int, default=96, help="Number of 15-minute steps to simulate (96 = 24h)")
     run.add_argument("--idf", default=r"D:\EnergyPlus\ExampleFiles\5ZoneAirCooled.idf")
     run.add_argument("--epw", default=r"D:\EnergyPlus\WeatherData\USA_CA_San.Francisco.Intl.AP.724940_TMY3.epw")
 
@@ -54,11 +56,11 @@ def main() -> None:
         from .config import RunConfig
         controller = ClosedLoopController(RunConfig())
         if args.mode == "compare":
-            metrics = controller.compare()
+            metrics = controller.compare(steps=args.steps)
             print("\n=== Comparison Results ===")
             print(json.dumps(metrics, indent=2))
         else:
-            events = controller.run(mode=args.mode)
+            events = controller.run(mode=args.mode, steps=args.steps)
             print(f"\n[OK] {args.mode} run completed: {len(events)} events")
 
     elif args.command == "run":
